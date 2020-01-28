@@ -45,11 +45,8 @@ object NQueens {
 	/** Checks if the board is solved */
 	def isBoardSolved(board: Array[Array[Int]]): Boolean = {
 		var queensFound = 0
-		val boardLength = board.length - 1
 
-		for (x <- 0 to boardLength)
-			for (y <- 0 to boardLength)
-				if (board(x)(y).equals(1)) queensFound = queensFound + 1
+		board.foreach(row => if(row.mkString(" ").contains("1")) queensFound = queensFound + 1)
 
 		if (queensFound != board.length) return false
 
@@ -94,7 +91,7 @@ object NQueens {
 
 	/** Main function */
 	def main(args: Array[String]): Unit = {
-		val N = 7
+		val N = 10
 
 		println("Trying to solve the board with N = " + N + ".")
 		val isSolvable = solve(N)
