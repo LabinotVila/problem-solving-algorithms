@@ -12,13 +12,14 @@ object MiniMax {
 	}
 
 	def evaluate(board: Array[Array[String]]): Int = {
+
 		/** Check horizontally if someone has won */
-		board.foreach(row => if (row.mkString(" ").equals("X X X")) return 10
-		else if (row.mkString(" ").equals("O O O")) return -10)
+		board.foreach(row => if (row.mkString.equals("XXX")) return 10
+		else if (row.mkString.equals("OOO")) return -10)
 
 		/** Check vertically if someone has won */
-		board.transpose.foreach(row => if (row.mkString(" ").equals("X X X")) return 10
-		else if (row.mkString(" ").equals("O O O")) return -10)
+		board.transpose.foreach(row => if (row.mkString.equals("XXX")) return 10
+		else if (row.mkString.equals("OOO")) return -10)
 
 		/** Check slopes if someone has won */
 		if (board(0)(0) == board(1)(1) && board(1)(1) == board(2)(2) && board(0)(0).equals("X")) return 10
@@ -105,10 +106,9 @@ object MiniMax {
 	def main(args: Array[String]): Unit = {
 
 		val board = Array(
-			Array("X", ".", "X"),
-			Array("O", "X", "."),
-			Array("X", ".", "O"),
-
+			Array("X", "X", "O"),
+			Array("O", "O", "X"),
+			Array("X", "O", "X"),
 		)
 
 		val move = findBestMove(board)
