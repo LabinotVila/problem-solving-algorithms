@@ -1,3 +1,5 @@
+package NQueens
+
 import scala.util.Try
 
 object NQueens {
