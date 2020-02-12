@@ -2,7 +2,7 @@ package NQueens
 
 import scala.util.Try
 
-object NQueens {
+object Backtrack {
 
 	/** Checks if the value to be placed is horizontally valid */
 	def isHorizontallyGood(board: Array[Array[Int]], x: Int): Boolean = !board(x).contains(1)

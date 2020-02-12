@@ -4,6 +4,9 @@ import scala.math._
 
 object MiniMax {
 
+	/** Prints the whole board */
+	def printBoard(board: Array[Array[String]]): Unit = board.foreach(row => println(row.mkString(" ")))
+
 	/** Checks whether the board is a tie */
 	def isTie(board: Array[Array[String]]): Boolean = {
 		board.foreach(row => if (row.mkString.contains(".")) return false)
@@ -96,16 +99,37 @@ object MiniMax {
 		bestMove
 	}
 
+	/** Agent vs Player */
+	def loadGame(board: Array[Array[String]]): Unit = {
+		println("Agent's turn to play!")
+		val agentMove = findBestMove(board)
+		board(agentMove._1)(agentMove._2) = "X"
+		printBoard(board)
+		if (evaluate(board) == 10) return println("Agent has won the game!")
+		if (isTie(board)) return println("Game is a tie!")
+
+		println("Your turn to play!")
+		print("Place the coordinates of the array: ")
+		val input = scala.io.StdIn.readLine().split(" ").map(value => value.toInt)
+		board(input(0))(input(1)) = "O"
+		printBoard(board)
+		if (evaluate(board) == -10) return println("Player has won the game!")
+		if (isTie(board)) return println("Game is a tie!")
+
+		println("\n######################")
+		loadGame(board)
+	}
+
 	/** Main function */
 	def main(args: Array[String]): Unit = {
 
 		val board = Array(
-			Array("O", "X", "0"),
-			Array("X", "X", "."),
-			Array("O", "O", "."),
+			Array(".", ".", "."),
+			Array(".", ".", "."),
+			Array(".", ".", "."),
 		)
 
-		println(findBestMove(board))
+		loadGame(board)
 	}
 
 }
