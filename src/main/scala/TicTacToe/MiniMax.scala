@@ -4,15 +4,15 @@ import scala.math._
 
 object MiniMax {
 
+	/** Checks whether the board is a tie */
 	def isTie(board: Array[Array[String]]): Boolean = {
-
 		board.foreach(row => if (row.mkString.contains(".")) return false)
 
 		true
 	}
 
+	/** Heuristic approach */
 	def evaluate(board: Array[Array[String]]): Int = {
-
 		/** Check horizontally if someone has won */
 		board.foreach(row => if (row.mkString.equals("XXX")) return 10
 		else if (row.mkString.equals("OOO")) return -10)
@@ -31,29 +31,25 @@ object MiniMax {
 		0
 	}
 
+	/** Minimax score evaluator */
 	def minimax(board: Array[Array[String]], isAgent: Boolean): Int = {
 
 		val result = evaluate(board)
 
-		if (result == 10) return result
-		if (result == -10) return result
+		if (result != 0) return result
 		if (isTie(board)) return 0
 
 		if (isAgent) {
 			var bestScore = Int.MinValue
 
-			for (x <- 0 to 2) {
-				for (y <- 0 to 2) {
-
+			for (x <- 0 until board.length) {
+				for (y <- 0 until board.length) {
 					if (board(x)(y).equals(".")) {
-
 						board(x)(y) = "X"
-						val score = minimax(board, false)
-						board(x)(y) = "."
 
-						if (score > bestScore) {
-							bestScore = score
-						}
+						bestScore = max(minimax(board, false), bestScore)
+
+						board(x)(y) = "."
 					}
 				}
 			}
@@ -61,18 +57,14 @@ object MiniMax {
 		} else {
 			var bestScore = Int.MaxValue
 
-			for (x <- 0 to 2) {
-				for (y <- 0 to 2) {
-
+			for (x <- 0 until board.length) {
+				for (y <- 0 until board.length) {
 					if (board(x)(y).equals(".")) {
-
 						board(x)(y) = "O"
-						val score = minimax(board, true)
-						board(x)(y) = "."
 
-						if (score < bestScore) {
-							bestScore = score
-						}
+						bestScore = min(minimax(board, true), bestScore)
+
+						board(x)(y) = "."
 					}
 				}
 			}
@@ -80,39 +72,40 @@ object MiniMax {
 		}
 	}
 
+	/** Find best move of the given board */
 	def findBestMove(board: Array[Array[String]]): (Int, Int) = {
 
 		var bestScore = Int.MinValue
 		var bestMove = (0, 0)
 
-		for (x <- 0 to 2) {
-			for (y <- 0 to 2) {
+		for (x <- 0 until board.length) {
+			for (y <- 0 until board.length) {
 				if (board(x)(y).equals(".")) {
 					board(x)(y) = "X"
 					val score = minimax(board, false)
-					board(x)(y) = "."
 
 					if (score > bestScore) {
 						bestScore = score
 						bestMove = (x, y)
 					}
+
+					board(x)(y) = "."
 				}
 			}
 		}
-
 		bestMove
 	}
 
+	/** Main function */
 	def main(args: Array[String]): Unit = {
 
 		val board = Array(
-			Array("X", "X", "O"),
-			Array("O", "O", "X"),
-			Array("X", "O", "X"),
+			Array("O", "X", "0"),
+			Array("X", "X", "."),
+			Array("O", "O", "."),
 		)
 
-		val move = findBestMove(board)
-
-		println(move)
+		println(findBestMove(board))
 	}
+
 }
