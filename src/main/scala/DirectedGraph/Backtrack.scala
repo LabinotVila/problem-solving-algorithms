@@ -1,4 +1,4 @@
-package Graph
+package DirectedGraph
 
 import com.google.gson.{Gson, JsonParser}
 import scala.io.Source
